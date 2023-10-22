@@ -15,7 +15,7 @@ set(SOURCE_FILES
 add_definitions(-DSK_DEBUG=2)
 add_definitions(-DSKY_LIB)
 
-include_directories(${PROJECT_SOURCE_DIR})
+include_directories(../Sky)
 include_directories(../glfw/include)
 
 
