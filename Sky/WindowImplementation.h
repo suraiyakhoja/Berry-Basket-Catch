@@ -1,0 +1,15 @@
+#pragma once
+
+#include "pch.h"
+namespace sk
+{
+	class WindowImplementation
+	{
+	public:
+		virtual void Create(const std::string& name, int width, int height) = 0;
+		virtual int GetHeight() const = 0;
+		virtual int GetWidth() const = 0;
+
+		virtual ~WindowImplementation();
+	};
+}

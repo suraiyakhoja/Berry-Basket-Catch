@@ -1,0 +1,4 @@
+C:/Users/X1_Carbon/Documents/vs/Game_SK/glfw_proj/CMakeFiles/ALL_BUILD.dir
+C:/Users/X1_Carbon/Documents/vs/Game_SK/glfw_proj/CMakeFiles/ZERO_CHECK.dir
+C:/Users/X1_Carbon/Documents/vs/Game_SK/glfw_proj/src/CMakeFiles/glfw.dir
+C:/Users/X1_Carbon/Documents/vs/Game_SK/glfw_proj/src/CMakeFiles/update_mappings.dir
