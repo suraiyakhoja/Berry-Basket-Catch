@@ -24,9 +24,12 @@ namespace sk
 	template<typename T>
 	void SkyApp<T>::Run()
 	{
+		mWindow.Create("Game_SK", 1000, 800);
 		while (mShouldContinue)
 		{
 			OnUpdate();
+			mWindow.SwapBuffers();
+			mWindow.PollEvents();
 		}
 
 	}

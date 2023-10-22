@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Utilities.h"
+#include "GameWindow.h"
 
 namespace sk
 {
 	template<typename T>
-	class SKY_API SkyApp
+	class SkyApp
 	{
 	public:
 		static void Init();
@@ -19,6 +20,7 @@ namespace sk
 	private:
 		SkyApp();
 		inline static SkyApp* sInstance{ nullptr };
+		GameWindow mWindow;
 		bool mShouldContinue{ true };
 
 	};

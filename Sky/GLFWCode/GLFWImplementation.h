@@ -11,6 +11,8 @@ namespace sk
 		void Create(const std::string& name, int width, int height) override;
 		int GetHeight() const override;
 		int GetWidth() const override;
+		virtual void SwapBuffers() override;
+		virtual void PollEvents() override;
 
 	private:
 		GLFWwindow* mWindow;
