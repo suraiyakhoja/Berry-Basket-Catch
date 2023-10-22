@@ -2,15 +2,20 @@ set(HEADER_FILES
 	include/Sky.h
 	SkyApp.h
 	Utilities.h
+	GameWindow.h
+	WindowImplementation.h
+	GLFWCode/GLFWImplementation.h
 )
 
 set(SOURCE_FILES
-	placeholder.cpp
+	GameWindow.cpp
+	GLFWCode/GLFWImplementation.cpp
 )
 
 add_definitions(-DSK_DEBUG=2)
 add_definitions(-DSKY_LIB)
 
+include_directories(${PROJECT_SOURCE_DIR})
 include_directories(../glfw/include)
 
 
