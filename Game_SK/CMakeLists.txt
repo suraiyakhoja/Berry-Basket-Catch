@@ -1,9 +1,12 @@
-set(HEADER_FILES
-	
+set(HEADER_FILES	
+	Ingredient.h
+	MyGame.h
 )
 
 set(SOURCE_FILES
 	main.cpp
+	Ingredient.cpp
+	MyGame.cpp
 )
 
 

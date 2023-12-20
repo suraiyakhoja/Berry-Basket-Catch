@@ -1,14 +1,16 @@
-#include "Sky.h"
+#include "../Sky/include/Sky.h"
+#include "MyGame.h"
 #include <iostream>
 
-class MyGame : public sk::SkyApp<MyGame>
+int main()
 {
-public:
-	virtual void OnUpdate() override
-	{
-		std::cout << "Sky running" << std::endl;
-	}
-};
+	MyGame game;
 
-SKY_APPLICATION_START(MyGame);
+	game.SetKeyPressedCallback([&game](const sk::KeyPressed& e) { game.HandleInput(e); });
+	game.Run();
+
+	return 0;
+}
+
+//SKY_APPLICATION_START(ColorCollectorGame);
 

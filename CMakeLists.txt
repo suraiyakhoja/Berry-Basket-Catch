@@ -16,7 +16,13 @@ elseif(APPLE)
 endif()
 
 add_subdirectory(glfw)
+add_subdirectory(glad)
+add_subdirectory(stbi)
 add_subdirectory(Sky)
 add_subdirectory(Game_SK)
 
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT Game_SK)
+
+file(COPY Assets DESTINATION ${PROJECT_BINARY_DIR})
+file(COPY Assets DESTINATION ${PROJECT_BINARY_DIR}/Debug)
+file(COPY Assets DESTINATION ${PROJECT_BINARY_DIR}/Release)
