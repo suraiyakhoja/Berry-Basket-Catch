@@ -17,7 +17,8 @@ set(HEADER_FILES
 	Unit.h
 	Utilities.h
 	WindowImplementation.h
-	Keys.h
+	Keys.h	
+	Events.h
 )
 
 set(SOURCE_FILES
@@ -30,6 +31,7 @@ set(SOURCE_FILES
 	Renderer.cpp
 	Shader.cpp
 	Unit.cpp
+	Events.cpp
 )
 
 add_definitions(-DSK_DEBUG=2)

@@ -7,6 +7,7 @@ int main()
 	MyGame game;
 
 	game.SetKeyPressedCallback([&game](const sk::KeyPressed& e) { game.HandleInput(e); });
+
 	game.Run();
 
 	return 0;

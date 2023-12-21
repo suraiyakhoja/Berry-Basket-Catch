@@ -141,6 +141,8 @@
     <ClInclude Include="GLFWCode\OpenGLPicture.h" />
     <ClInclude Include="GLFWCode\OpenGLRenderer.h" />
     <ClInclude Include="GLFWCode\OpenGLShader.h" />
+    <ClInclude Include="KeyPressed.h" />
+    <ClInclude Include="KeyReleased.h" />
     <ClInclude Include="Keys.h" />
     <ClInclude Include="Picture.h" />
     <ClInclude Include="PictureImplementation.h" />

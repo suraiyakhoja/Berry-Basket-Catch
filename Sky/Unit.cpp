@@ -68,4 +68,24 @@ namespace sk
 		return x_intersection and y_intersection;
 	}
 
+	bool UnitsOverlap(const Unit& a, int x, int y, int objectSize)
+	{
+		int left_a{ a.mXPosition };
+		int right_a{ a.mXPosition + a.mImage.GetWidth() };
+		int left_b{ x };
+		int right_b{ x + objectSize };
+
+		bool x_intersection{ (left_a <= left_b and left_b <= right_a) or (left_b <= left_a and left_a <= right_b) };
+
+		int bot_a{ a.mYPosition };
+		int top_a{ a.mYPosition + a.mImage.GetHeight() };
+		int bot_b{ y };
+		int top_b{ y + objectSize };
+
+		bool y_intersection{ (bot_a <= bot_b and bot_b <= top_a) or (bot_b <= bot_a and bot_a <= top_b) };
+
+		return x_intersection and y_intersection;
+	}
+
+
 }

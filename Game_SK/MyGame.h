@@ -6,6 +6,8 @@
 //#include "Events.h"
 //#include "Unit.h"
 #include "Ingredient.h"
+#include "Leaf.h"
+#include "Power.h"
 #include <random>
 
 class MyGame : public sk::SkyApp<MyGame>
@@ -19,9 +21,18 @@ public:
 	sk::Unit& GetPlayer() { return mBasket; }
 
 	void AddFallingFruit();
+	void AddFallingLeaf();
 
 	void DrawScore(int x, int y, int score);
 	std::vector<sk::Picture> LoadDigitTextures();
+
+	void AddFallingPower();
+	void IncreaseSpeed();
+	void UpdatePower();
+
+	bool IsOverlappingExistingObjects(int x, int y, int objectSize);
+
+
 
 private:
 	int RandomInt(int min, int max);
@@ -39,12 +50,30 @@ private:
 	int mFallSpeed;
 	int mFruitsCaught;
 	int mFallingFruits;
+	int mBasketSpeed = 30;
+	std::chrono::time_point<std::chrono::steady_clock> mPowerStartTime;
 
-	void CheckCollision();
+	std::vector<sk::Leaf> mLeaves;
+	int mLeavesCaught = 0;
+	int mLeafSpawnInterval = 25;
+
+	std::vector<sk::Power> mPower;
+
+
+	void CheckFruitCollision();
+	void CheckLeafCollision();
+	void CheckPowerCollision();
 	void UpdateScore();
 
 //	static constexpr int FruitFallSpeed = 5;
-	int InitialFruitSpawnInterval = 30;
+	int InitialFruitSpawnInterval = 24;
 	static constexpr int FruitSize = 5;
+
+	static constexpr int LeafSize = 5;
+
+	static constexpr int PowerSize = 5;
+
+	std::chrono::time_point<std::chrono::steady_clock> mStartTime;
+	std::chrono::time_point<std::chrono::steady_clock> mCurrentTime;
 };
 

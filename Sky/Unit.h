@@ -27,6 +27,8 @@ namespace sk
 
 		template<typename T> friend class SkyApp;
 		friend SKY_API bool UnitsOverlap(const Unit& a, const Unit& b);
+		friend SKY_API bool UnitsOverlap(const Unit& a, int x, int y, int objectSize);
+
 	};
 
 	SKY_API bool UnitsOverlap(const Unit& a, const Unit& b);
