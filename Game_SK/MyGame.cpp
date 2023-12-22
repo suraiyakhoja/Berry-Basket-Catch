@@ -1,43 +1,31 @@
 #include "MyGame.h"
-//#include "Keys.h"
 
 MyGame::MyGame() :
 	mBasket("../Assets/Pictures/basket.png", 0, 0), mBasketTexture("../Assets/Pictures/basket.png"),
-	//mApple("../Assets/Pictures/apple.png", 15, 15), mAppleTexture("../Assets/Pictures/apple.png"),
 	mFrameCount(0), mFallSpeed(10), mFruitsCaught(0), mScore(0), mFallingFruits(1)
 {
-	//mBasketTexture = sk::Picture("../Assets/Pictures/basket.png");
-	//mAppleTexture = sk::Picture("../Assets/Pictures/apple.png");
 }
 
 void MyGame::OnUpdate()
 {
-	std::cout << "OnUpdate" << std::endl;
 	mRenderer.Clear();
 	sk::Picture backgroundPicture("../Assets/Pictures/background.png");
 	mRenderer.Draw(0, 0, backgroundPicture);
 
-
 	mRenderer.Draw(mBasket.GetXCoord(), mBasket.GetYCoord(), mBasketTexture);
-	std::cout << "Basket Coordinates: (" << mBasket.GetXCoord() << ", " << mBasket.GetYCoord() << ")" << std::endl;
-	std::cout << "mFallingFruits: " << mFallingFruits << ", InitialFruitSpawnInterval: " << InitialFruitSpawnInterval << std::endl;
 
 
 	if (mFrameCount % (InitialFruitSpawnInterval / mFallingFruits) == 0) {
 		AddFallingFruit();
-		std::cout << "Number of Fruits: " << mFruits.size() << std::endl;
-
 	}
 	
 	if (mFruitsCaught >= 5 && mFrameCount % mLeafSpawnInterval == 0)
 	{
 		AddFallingLeaf();
-		std::cout << "Number of Leaves: " << mLeaves.size() << std::endl;
 	}
 
 	if (mFruitsCaught >= 10 && mFrameCount % 20 == 0)
 	{
-		// Spawn a power texture every 20 frames when 25 fruits have been caught
 		if (mFruitsCaught % 5 == 0)
 		{
 			AddFallingPower();
@@ -45,26 +33,24 @@ void MyGame::OnUpdate()
 	}
 	
 	
-
-	for (auto& fruit : mFruits) {
-		std::cout << "Fruit Coordinates: (" << fruit.GetXCoord() << ", " << fruit.GetYCoord() << ")" << std::endl;
-
+	for (auto& fruit : mFruits) 
+	{
 		fruit.Fall(mFallSpeed);
 		std::string fruitTexturePath = fruit.GetTexturePath();
 		sk::Picture fruitPicture(fruitTexturePath); // Convert the path to a Picture
-
 		mRenderer.Draw(fruit.GetXCoord(), fruit.GetYCoord(), fruitPicture);
 	}
 	
-	for (auto& leaf : mLeaves) {
-		std::cout << "Leaf Coordinates: (" << leaf.GetXCoord() << ", " << leaf.GetYCoord() << ")" << std::endl;
+	for (auto& leaf : mLeaves) 
+	{
 		leaf.Fall(mFallSpeed);
 		std::string leafTexturePath = leaf.GetTexturePath();
 		sk::Picture leafPicture(leafTexturePath);
 		mRenderer.Draw(leaf.GetXCoord(), leaf.GetYCoord(), leafPicture);
 	}
 
-	for (auto& power : mPower) {
+	for (auto& power : mPower) 
+	{
 		power.Fall(mFallSpeed);
 		std::string powerTexturePath = power.GetTexturePath();
 		sk::Picture powerPicture(powerTexturePath);
@@ -72,11 +58,10 @@ void MyGame::OnUpdate()
 	}
 
 
-	
-	
 
 	int fruitSpawnInterval = InitialFruitSpawnInterval - mFallSpeed / 10;
-	fruitSpawnInterval = std::max(fruitSpawnInterval, 1);  // Ensure the interval is not less than 1
+	fruitSpawnInterval = std::max(fruitSpawnInterval, 1);  
+
 	if (mFruitsCaught > 5 && mFruitsCaught <= 25)
 	{
 		mFallSpeed = 15;
@@ -87,20 +72,20 @@ void MyGame::OnUpdate()
 		mFallSpeed = 20;
 		InitialFruitSpawnInterval = 15;
 	}
-
-	
+	else if (mFruitsCaught > 50)
+	{
+		mFallSpeed = 25;
+		InitialFruitSpawnInterval = 12;
+	}
 
 	UpdatePower();
 
-
-	
 	mFrameCount++;
 
 	CheckFruitCollision();
 	CheckLeafCollision();
 	CheckPowerCollision();
-	UpdateScore();
-	DrawScore(700, 500, mScore);
+	DrawScore(100, 600, mScore);
 
 
 
@@ -123,6 +108,7 @@ void MyGame::HandleInput(const sk::KeyPressed& keyPressedEvent)
 }
 
 
+
 void MyGame::AddFallingFruit()
 {
 	std::vector<std::string> fruitTexturePaths = {
@@ -133,20 +119,20 @@ void MyGame::AddFallingFruit()
 		"../Assets/Pictures/orange.png",
 		"../Assets/Pictures/watermelon.png",
 		"../Assets/Pictures/grapes.png"
-		// Add more fruit textures as needed
 	};
-
+	
 	std::string randomTexturePath = fruitTexturePaths[RandomInt(0, fruitTexturePaths.size() - 1)];
 
-	// Generate a random position for the fruit, avoiding overlap
+	// Generate random position for fruit to fall 
 	int randomX, randomY;
 	do {
-		randomX = RandomInt(0, mWindow.GetWidth() - FruitSize);
-		randomX = std::clamp(randomX, 0, mWindow.GetWidth() - FruitSize);
+		randomX = RandomInt(0, mWindow.GetWidth() - mFruitSize);
+		randomX = std::clamp(randomX, 0, mWindow.GetWidth() - mFruitSize);
 		randomY = mWindow.GetHeight();
-	} while (IsOverlappingExistingObjects(randomX, randomY, FruitSize));
+	} while (IsOverlappingExistingObjects(randomX, randomY, mFruitSize));
 
 	mFruits.emplace_back(randomTexturePath, randomX, randomY);
+
 
 }
 
@@ -161,86 +147,57 @@ void MyGame::AddFallingLeaf()
 
 	std::string randomTexturePath = leafTexturePaths[RandomInt(0, leafTexturePaths.size() - 1)];
 
-	// Generate a random position for the leaf, avoiding overlap
+	// Random position to fall  
 	int randomX, randomY;
 	do {
-		randomX = RandomInt(0, mWindow.GetWidth() - LeafSize);
-		randomX = std::clamp(randomX, 0, mWindow.GetWidth() - LeafSize);
+		randomX = RandomInt(0, mWindow.GetWidth() - mLeafSize);
+		randomX = std::clamp(randomX, 0, mWindow.GetWidth() - mLeafSize);
 		randomY = mWindow.GetHeight();
-	} while (IsOverlappingExistingObjects(randomX, randomY, LeafSize));
+	} while (IsOverlappingExistingObjects(randomX, randomY, mLeafSize));
 
 	mLeaves.emplace_back(randomTexturePath, randomX, randomY);
 }
 
-void MyGame::DrawScore(int x, int y, int score)
+void MyGame::AddFallingPower()
 {
-	std::vector<sk::Picture> digitTextures = LoadDigitTextures();
+	std::vector<std::string> powerTexturePaths = {
+		"../Assets/Pictures/power1.png",
+		"../Assets/Pictures/power2.png"
+	};
 
-	// Handle the case when the score is 0
-	if (score == 0) {
-		mRenderer.Draw(x, y, digitTextures[0]);
-		return;
-	}
+	std::string randomTexturePath = powerTexturePaths[RandomInt(0, powerTexturePaths.size() - 1)];
 
-	// Calculate the total width of the digits
-	int totalWidth = 0;
-	int tempScore = score;
-	while (tempScore > 0) {
-		int digit = tempScore % 10;
-		totalWidth += digitTextures[digit].GetWidth();
-		tempScore /= 10;
-	}
+	// Random position to fall
+	int randomX, randomY;
+	do {
+		randomX = RandomInt(0, mWindow.GetWidth() - mPowerSize);
+		randomX = std::clamp(randomX, 0, mWindow.GetWidth() - mPowerSize);
+		randomY = RandomInt(mWindow.GetHeight() / 2, mWindow.GetHeight() - mPowerSize);
+		randomY = std::clamp(randomY, mWindow.GetHeight() / 2, mWindow.GetHeight() - mPowerSize);
+	} while (IsOverlappingExistingObjects(randomX, randomY, mPowerSize));
 
-	// Start drawing from the right side of the window
-	int xOffset = x + totalWidth;
+	mPower.emplace_back(randomTexturePath, randomX, randomY);
+}
 
-	// Draw each digit from right to left
-	tempScore = score;
-	while (tempScore > 0) {
-		int digit = tempScore % 10;
-		xOffset -= digitTextures[digit].GetWidth();
-		mRenderer.Draw(xOffset, y, digitTextures[digit]);
-		tempScore /= 10;
-	}
+void MyGame::IncreaseSpeed()
+{
+	mBasketSpeed += 30;  
+	mFallSpeed += 15;
+	mCurrentTime = std::chrono::steady_clock::now();
 }
 
 
-
-
-
-
-
-
-std::vector<sk::Picture> MyGame::LoadDigitTextures()
+void MyGame::UpdatePower()
 {
-	std::vector<std::string> digitPaths;
-	//Load textures for digits and store them in digitTextures
+	auto currentTime = std::chrono::steady_clock::now();
+	auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - mCurrentTime).count();
 
-	for (int i = 0; i <= 9; i++)
+	if (elapsedTime >= 15)
 	{
-		
-		digitPaths.emplace_back("../Assets/Pictures/" + std::to_string(i) + ".png");
+		// reset speed
+		mBasketSpeed = 30;
+
 	}
-	// Create sk::Picture objects when needed
-	std::vector<sk::Picture> digitTextures;
-	for (const auto& path : digitPaths)
-	{
-		digitTextures.emplace_back(path);
-	}
-
-	return digitTextures;
-
-}
-
-int MyGame::RandomInt(int min, int max)
-{
-	//first three lines extra 
-	auto currentTime = std::chrono::system_clock::now();
-	auto seed = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime.time_since_epoch()).count();
-
-	// Seed the random number generator
-	srand(static_cast<unsigned int>(seed));
-	return min + rand() % (max - min + 1);
 }
 
 void MyGame::CheckFruitCollision()
@@ -252,9 +209,10 @@ void MyGame::CheckFruitCollision()
 			mScore += 50;
 			mFruitsCaught++;
 			i = mFruits.erase(i);
-		}
-		else {
-			++i; // no collision, move to next fruit 
+		} 
+		else
+		{
+			++i;
 		}
 	}
 }
@@ -265,11 +223,12 @@ void MyGame::CheckLeafCollision()
 	{
 		if (UnitsOverlap(*i, mBasket))
 		{
-			mScore -= 50;
+			mScore -= 25;
 			mLeavesCaught++;
 			i = mLeaves.erase(i);
 		}
-		else {
+		else
+		{
 			++i;
 		}
 	}
@@ -284,65 +243,70 @@ void MyGame::CheckPowerCollision()
 			IncreaseSpeed();
 			i = mPower.erase(i);
 			UpdatePower();
-		}
-		else {
+		} 
+		else
+		{
 			++i;
 		}
 	}
 
 }
 
-void MyGame::AddFallingPower()
+
+std::vector<sk::Picture> MyGame::LoadDigitTextures()
 {
-	std::vector<std::string> powerTexturePaths = {
-		"../Assets/Pictures/power1.png",
-		"../Assets/Pictures/power2.png"
-	};
+	std::vector<std::string> digitPaths;
 
-	std::string randomTexturePath = powerTexturePaths[RandomInt(0, powerTexturePaths.size() - 1)];
-
-	// Generate a random position for the power-up, avoiding overlap
-	int randomX, randomY;
-	do {
-		randomX = RandomInt(0, mWindow.GetWidth() - PowerSize);
-		randomX = std::clamp(randomX, 0, mWindow.GetWidth() - PowerSize);
-		randomY = RandomInt(mWindow.GetHeight() / 2, mWindow.GetHeight() - PowerSize);
-		randomY = std::clamp(randomY, mWindow.GetHeight() / 2, mWindow.GetHeight() - PowerSize);
-	} while (IsOverlappingExistingObjects(randomX, randomY, PowerSize));
-
-	mPower.emplace_back(randomTexturePath, randomX, randomY);
-}
-
-
-void MyGame::UpdateScore()
-{
-	std::cout << "Score: " << mScore << std::endl;
-}
-
-void MyGame::IncreaseSpeed()
-{
-	// Adjust the speed based on your requirements
-	mBasketSpeed += 30;  // Increase by 15 (you can adjust this value)
-	mFallSpeed += 15;
-	mCurrentTime = std::chrono::steady_clock::now();
-}
-
-void MyGame::UpdatePower()
-{
-	auto currentTime = std::chrono::steady_clock::now();
-	auto elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - mCurrentTime).count();
-
-	if (elapsedTime >= 7)
+	for (int i = 0; i <= 9; i++)
 	{
-		// Reset the speed to its original value
-		mBasketSpeed = 30;
+		digitPaths.emplace_back("../Assets/Pictures/" + std::to_string(i) + ".png");
+	}
+	
+	std::vector<sk::Picture> digitTextures;
+	for (const auto& path : digitPaths)
+	{
+		digitTextures.emplace_back(path);
+	}
 
+	return digitTextures;
+
+}
+
+
+void MyGame::DrawScore(int x, int y, int score)
+{
+	std::vector<sk::Picture> digitTextures = LoadDigitTextures();
+
+	if (score == 0) {
+		mRenderer.Draw(x, y, digitTextures[0]);
+		return;
+	}
+
+	// width of digits
+	int totalWidth = 0;
+	int tempScore = score;
+	while (tempScore > 0) {
+		int digit = tempScore % 10;
+		totalWidth += digitTextures[digit].GetWidth();
+		tempScore /= 10;
+	}
+
+	// draw from right of window
+	int xOffset = x + totalWidth;
+
+	// draw from right to left
+	tempScore = score;
+	while (tempScore > 0) {
+		int digit = tempScore % 10;
+		xOffset -= digitTextures[digit].GetWidth();
+		mRenderer.Draw(xOffset, y, digitTextures[digit]);
+		tempScore /= 10;
 	}
 }
 
+
 bool MyGame::IsOverlappingExistingObjects(int x, int y, int objectSize)
 {
-	// Check if the new object overlaps with any existing objects
 	for (const auto& fruit : mFruits) {
 		if (UnitsOverlap(fruit, x, y, objectSize)) {
 			return true;
@@ -361,7 +325,17 @@ bool MyGame::IsOverlappingExistingObjects(int x, int y, int objectSize)
 		}
 	}
 
-	// No overlap with existing objects
 	return false;
 }
+
+int MyGame::RandomInt(int min, int max)
+{
+	// Initialize and generate random int
+	auto currentTime = std::chrono::system_clock::now();
+	auto seed = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime.time_since_epoch()).count();
+	srand(static_cast<unsigned int>(seed));
+	return min + rand() % (max - min + 1);
+}
+
+
 

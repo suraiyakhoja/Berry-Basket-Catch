@@ -1,10 +1,6 @@
 #pragma once
 
 #include "../Sky/include/Sky.h"
-//#include "SkyApp.h"
-//#include "Picture.h"
-//#include "Events.h"
-//#include "Unit.h"
 #include "Ingredient.h"
 #include "Leaf.h"
 #include "Power.h"
@@ -17,63 +13,57 @@ public:
 	void OnUpdate() override;
 	void HandleInput(const sk::KeyPressed& keyPressedEvent);
 
-	const sk::Unit& GetPlayer() const { return mBasket; }
-	sk::Unit& GetPlayer() { return mBasket; }
+	const sk::Unit& GetBasket() const { return mBasket; }
+	sk::Unit& GetBasket() { return mBasket; }
 
 	void AddFallingFruit();
 	void AddFallingLeaf();
-
-	void DrawScore(int x, int y, int score);
-	std::vector<sk::Picture> LoadDigitTextures();
-
 	void AddFallingPower();
 	void IncreaseSpeed();
 	void UpdatePower();
 
+	void CheckFruitCollision();
+	void CheckLeafCollision();
+	void CheckPowerCollision();
+
+	std::vector<sk::Picture> LoadDigitTextures();
+	void DrawScore(int x, int y, int score);
+
 	bool IsOverlappingExistingObjects(int x, int y, int objectSize);
+
+	int RandomInt(int min, int max);
+
 
 
 
 private:
-	int RandomInt(int min, int max);
 	int mFrameCount;
-
-	sk::Picture mBasketTexture;
-	sk::Unit mBasket;
-
-	//sk::Picture mAppleTexture;
-	///sk::Unit mApple;
-
-	std::vector<sk::Ingredient> mFruits;
-
 	int mScore;
 	int mFallSpeed;
 	int mFruitsCaught;
 	int mFallingFruits;
 	int mBasketSpeed = 30;
-	std::chrono::time_point<std::chrono::steady_clock> mPowerStartTime;
+
+	sk::Picture mBasketTexture;
+	sk::Unit mBasket;
+
+	std::vector<sk::Ingredient> mFruits;
 
 	std::vector<sk::Leaf> mLeaves;
 	int mLeavesCaught = 0;
 	int mLeafSpawnInterval = 25;
 
+	int InitialFruitSpawnInterval = 24;
+
 	std::vector<sk::Power> mPower;
 
+	int mFruitSize = 5;
+	int mLeafSize = 5;
+	int mPowerSize = 5;
 
-	void CheckFruitCollision();
-	void CheckLeafCollision();
-	void CheckPowerCollision();
-	void UpdateScore();
-
-//	static constexpr int FruitFallSpeed = 5;
-	int InitialFruitSpawnInterval = 24;
-	static constexpr int FruitSize = 5;
-
-	static constexpr int LeafSize = 5;
-
-	static constexpr int PowerSize = 5;
-
+	std::chrono::time_point<std::chrono::steady_clock> mPowerStartTime;
 	std::chrono::time_point<std::chrono::steady_clock> mStartTime;
 	std::chrono::time_point<std::chrono::steady_clock> mCurrentTime;
+
 };
 

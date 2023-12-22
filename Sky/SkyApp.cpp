@@ -15,8 +15,8 @@ namespace sk
 	template<typename T>
 	SkyApp<T>::SkyApp()
 	{
-		mWindow.Create("Game_SK", 1000, 800);
-
+		//mWindow.Create("Game_SK", 1000, 800);
+		mWindow.Create("Game_SK", 1400, 800);
 		mRenderer.Init();
 
 		SetWindowCloseCallback([this]() {DefaultWindowCloseHandler(); }); // [](){}

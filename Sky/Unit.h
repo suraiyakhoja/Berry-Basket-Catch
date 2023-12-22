@@ -20,6 +20,7 @@ namespace sk
 		void UpdateXCoord(int amount);
 		void UpdateYCoord(int amount);
 
+
 	private:
 		Picture mImage;
 		int mXPosition;
