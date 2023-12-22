@@ -6,4 +6,5 @@ If you collect a power up (a flower) the speed of your basket increases for 15 s
 
 Uniqueness:
 I implemented a way to keep track of the score and display it. 
+I also created power up textures that increase the speed of the texture basket if the user collides with it. 
 I also created another function in Unit that takes extra parameters and checks for overlapping items that are falling from the top of the game window. I did this to avoid items falling from the same coordinates. 
